@@ -1,7 +1,35 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
-import petsData from "../petsData";
+import { useParams } from "react-router-dom";
+import { deletePet, getPetById, updatePet } from "../api/pets";
+
 const PetDetail = () => {
-  const pet = petsData[0];
+  const { id } = useParams();
+  const queryClient = useQueryClient();
+
+  const { data: pet, isLoading } = useQuery({
+    queryKey: ["pet", id],
+    queryFn: () => getPetById(id),
+  });
+
+  const { mutate: deleteP, isPending: dLoading } = useMutation({
+    mutationKey: ["deletePet", id],
+    mutationFn: () => deletePet(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["pet", id]);
+    },
+  });
+
+  const { mutate: updateP, isPending: uLoading } = useMutation({
+    mutationKey: ["updatePet", id],
+    mutationFn: () => updatePet(id, pet),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["pet", id]);
+    },
+  });
+
+  if (isLoading) return <h1>Loading...</h1>;
+  if (!pet) return <h1>Not Found</h1>;
   return (
     <div className="bg-[#F9E3BE] w-screen h-[100vh] flex justify-center items-center">
       <div className="border border-black rounded-md w-[70%] h-[70%] overflow-hidden flex flex-col md:flex-row p-5">
@@ -17,12 +45,22 @@ const PetDetail = () => {
           <h1>Type: {pet.type}</h1>
           <h1>adopted: {pet.adopted}</h1>
 
-          <button className="w-[70px] border border-black rounded-md  hover:bg-green-400 mb-5">
-            Adobt
+          <button
+            onClick={() => {
+              updateP();
+            }}
+            className="w-[70px] border border-black rounded-md  hover:bg-green-400 mb-5"
+          >
+            {uLoading ? "Loading..." : "Adopt"}
           </button>
 
-          <button className="w-[70px] border border-black rounded-md  hover:bg-red-400">
-            Delete
+          <button
+            onClick={() => {
+              deleteP(id);
+            }}
+            className="w-[70px] border border-black rounded-md  hover:bg-red-400"
+          >
+            {dLoading ? "Loading..." : "Delete"}
           </button>
         </div>
       </div>

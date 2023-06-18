@@ -8,7 +8,7 @@ const Home = () => {
       </h1>
       <img
         src="https://img.freepik.com/premium-vector/cute-petshop-logo-with-cat-dog_454510-56.jpg"
-        alt="Pets image logo"
+        alt="Pets  logo"
       />
     </div>
   );
