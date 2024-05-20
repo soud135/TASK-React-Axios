@@ -2,6 +2,8 @@ import React from "react";
 import petsData from "../petsData";
 const PetDetail = () => {
   const pet = petsData[0];
+
+  
   return (
     <div className="bg-[#F9E3BE] w-screen h-[100vh] flex justify-center items-center">
       <div className="border border-black rounded-md w-[70%] h-[70%] overflow-hidden flex flex-col md:flex-row p-5">
