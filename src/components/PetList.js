@@ -4,29 +4,27 @@ import PetItem from "./PetItem";
 import Modal from "./Modal";
 import { Link } from "react-router-dom";
 import { getAllpets } from "../api/pets";
-
+import { useQuery } from "@tanstack/react-query";
 
 const PetList = () => {
   const [query, setQuery] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [pets, setPets] = useState ([]);
 
-  const petList = pets
-    .filter((pet) => pet.name.toLowerCase().includes(query.toLowerCase()))
+
+  const {data} = useQuery({ queryKey: ['getPetss'], queryFn: getAllpets })
+
+
+
+
+  const petList = data
+    ?.filter((pet) => pet.name.toLowerCase().includes(query.toLowerCase()))
     .map((pet) => <PetItem pet={pet} key={pet.id} />);
-const fetchPets = async () => {
-
-  const response = await getAllpets();
-  setPets(response)
-} 
 
   return (
     <>
       <div className="bg-[#F9E3BE] flex flex-col justify-center items-center ">
         <div className="w-[76vw] flex h-[30px] mb-[30px] mt-[30px]">
-          <button onClick={fetchPets}>
-            fectch
-          </button>
+        
 
           <input
             onChange={(e) => {
