@@ -12,18 +12,18 @@ const getOnePet = async(id)=>{
     
 };
 
-// const createPet = async(name, tybe, image)=>{
-//     const res = await instance.post(`/pets`,{
-//         name:""
-//         tybe:""
-//         image:""
-//         adobted:""
-//     });
-//     return res.data; 
+const createPet = async(name, type, image, adopted)=>{
+    const res = await instance.post(`/pets`,{
+        name: name,
+        type: type,
+        image: image,
+        adopted: adopted,
+     });
+    return res.data; 
     
-// };
+ };
 
 
 
 
-export { getAllpets,getOnePet };
+export { getAllpets,getOnePet,createPet };
